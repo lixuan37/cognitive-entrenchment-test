@@ -1,0 +1,269 @@
+/* ============================================
+   字母转换问题 — 专属样式
+   ============================================ */
+
+/* --- 主体两栏布局 --- */
+.page-wrapper .container {
+  max-width: 1100px;
+}
+
+.puzzle-two-col {
+  display: flex;
+  gap: var(--spacing-4);
+  align-items: flex-start;
+}
+
+.puzzle-left {
+  flex: 0 0 auto;
+  width: 530px;
+}
+
+.puzzle-right {
+  flex: 1;
+  min-width: 280px;
+}
+
+/* --- 布局 --- */
+.puzzle-canvas-card {
+  padding: var(--spacing-4);
+}
+
+.canvas-wrapper {
+  display: flex;
+  gap: var(--spacing-6);
+  align-items: flex-start;
+}
+
+/* --- 左侧参数区 --- */
+.letter-params {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  min-width: 120px;
+  padding-top: var(--spacing-4);
+}
+
+.param-block {
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+}
+
+.param-label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.param-current {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.target-block {
+  margin-top: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-md);
+  background: #FEF2F2;
+  border: 1.5px solid #FECACA;
+}
+
+/* --- Canvas 区域 --- */
+.canvas-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-light);
+  min-width: 0;
+}
+
+#letterCanvas {
+  display: block;
+}
+
+/* --- 操作按钮：双列竖排 --- */
+.action-columns {
+  display: flex;
+  gap: var(--spacing-4);
+}
+
+.action-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.action-col-header {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0 0 var(--spacing-2) var(--spacing-1);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.col-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.action-col-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: 0.5rem 0.75rem;
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.12s ease;
+  color: var(--color-text);
+  text-align: left;
+}
+
+.action-btn:hover {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent);
+}
+
+.action-btn .arrow {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* --- 低调放弃按钮 --- */
+.btn-subtle-skip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.25rem 0.4rem;
+  font-size: 12px;
+  font-family: var(--font-family);
+  color: #A8A29E;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.btn-subtle-skip:hover {
+  color: #EF4444;
+  background: #FEF2F2;
+}
+
+/* --- 题目头部 --- */
+.puzzle-header {
+  padding: var(--spacing-4) var(--spacing-5);
+}
+
+.puzzle-header h3 {
+  margin-bottom: 2px;
+}
+
+/* --- 实验后问卷 --- */
+.post-survey {
+  margin-top: var(--spacing-6);
+  padding: var(--spacing-6);
+}
+
+.survey-body {
+  max-width: 600px;
+}
+
+.survey-q {
+  margin-bottom: var(--spacing-5);
+}
+
+.survey-q-title {
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-3);
+}
+
+.survey-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding-left: var(--spacing-1);
+}
+
+.survey-opt {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.survey-opt:hover {
+  background: var(--color-bg);
+}
+
+.survey-opt input[type="radio"] {
+  accent-color: var(--color-accent);
+}
+
+/* --- 响应式 --- */
+@media (max-width: 860px) {
+  .puzzle-two-col {
+    flex-direction: column;
+  }
+
+  .puzzle-left {
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .canvas-wrapper {
+    flex-direction: column-reverse;
+  }
+
+  .letter-params {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    min-width: auto;
+  }
+
+  .param-block {
+    flex: 1;
+    min-width: 75px;
+    text-align: center;
+  }
+
+  .target-block {
+    margin-top: 0;
+  }
+
+  .action-columns {
+    flex-direction: column;
+  }
+
+  #letterCanvas {
+    width: 100%;
+    height: auto;
+  }
+}

@@ -1,0 +1,162 @@
+/* maze.css — 迷宫探索谜题样式 */
+
+/* --- 主体两栏布局 --- */
+.page-wrapper .container {
+  max-width: 1100px;
+}
+
+.puzzle-two-col {
+  display: flex;
+  gap: var(--spacing-4);
+  align-items: flex-start;
+}
+
+.puzzle-left {
+  flex: 0 0 auto;
+  width: 520px;       /* 迷宫 canvas 464px + padding */
+}
+
+.puzzle-right {
+  flex: 1;
+  min-width: 280px;
+}
+
+.puzzle-canvas-card {
+  padding: var(--spacing-4);
+}
+
+/* --- D-Pad 方向键 --- */
+.dpad-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: var(--spacing-3) 0;
+}
+
+.dpad-row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.dpad-mid {
+  gap: 14px;
+}
+
+.dpad-center {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  background: #E5E7EB;
+}
+
+.dpad-btn {
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 8px;
+  background: #6366F1;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+}
+
+.dpad-btn:hover {
+  background: #4F46E5;
+}
+
+.dpad-btn:active {
+  transform: scale(0.93);
+  background: #4338CA;
+}
+
+.dpad-btn:disabled {
+  background: #D1D5DB;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- 图例小圆点 --- */
+.start-dot, .exit-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+.start-dot { background: #22C55E; }
+.exit-dot   { background: #EF4444; }
+
+/* --- Canvas --- */
+.canvas-area {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-3) 0;
+}
+
+#mazeCanvas {
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  background: #FAFAFA;
+}
+
+/* --- 已达成动画 --- */
+@keyframes reachExit {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+}
+
+.maze-reached {
+  animation: reachExit 1.2s ease-out 3;
+}
+
+/* --- 实验后问卷覆盖层 --- */
+.survey-overlay {
+  display: none;           /* 默认隐藏，JS 添加 .active 后显示 */
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-4);
+}
+
+.survey-overlay.active {
+  display: flex !important;
+}
+
+.survey-overlay-inner {
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.survey-overlay .card {
+  margin: 0;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+
+/* --- 响应式 --- */
+@media (max-width: 900px) {
+  .puzzle-two-col {
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+
+  .puzzle-left {
+    width: 100%;
+  }
+
+  .puzzle-left, .puzzle-right {
+    max-width: 100% !important;
+    flex: none !important;
+  }
+}

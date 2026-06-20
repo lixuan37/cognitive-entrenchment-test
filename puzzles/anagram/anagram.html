@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字母转换 — 认知固着度测试</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="anagram.css">
+</head>
+<body>
+<div class="page-wrapper">
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-logo">
+        <div class="icon">&#9881;</div>
+        认知固着度测试
+      </div>
+      <span class="header-badge" id="progressBadge">谜题 2/4</span>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+
+      <div class="progress-bar mb-4">
+        <div class="progress-bar-fill" id="globalProgress" style="width: 0%;"></div>
+      </div>
+      <p class="progress-text">谜题 2 / 4 — 字母转换</p>
+
+      <div class="card puzzle-header">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 id="questionLabel">第 1 题 / 共 6 题</h3>
+            <p class="text-sm text-muted" id="questionDesc">通过操作将字母串变成目标字母串</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-muted">操作次数：</span>
+            <span class="font-mono font-bold" id="stepCount">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="puzzle-two-col">
+
+        <!-- 左栏：字母可视化 -->
+        <div class="puzzle-left">
+          <div class="card puzzle-canvas-card">
+            <div class="canvas-wrapper">
+              <div class="letter-params">
+                <div class="param-block" id="paramA">
+                  <div class="param-label" style="color: #6366F1;">位置 A</div>
+                  <div class="param-current">当前 <span class="font-mono" id="curA">A</span></div>
+                </div>
+                <div class="param-block" id="paramB">
+                  <div class="param-label" style="color: #10B981;">位置 B</div>
+                  <div class="param-current">当前 <span class="font-mono" id="curB">B</span></div>
+                </div>
+                <div class="param-block" id="paramC">
+                  <div class="param-label" style="color: #F59E0B;">位置 C</div>
+                  <div class="param-current">当前 <span class="font-mono" id="curC">C</span></div>
+                </div>
+                <div class="target-block">
+                  <div class="param-label" style="color: #EF4444;">&#9679; 目标</div>
+                  <div class="param-current"><span class="font-mono font-bold" id="targetLetters">CBA</span></div>
+                </div>
+              </div>
+              <div class="canvas-area">
+                <canvas id="letterCanvas" width="330" height="280"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右栏：操作区 -->
+        <div class="puzzle-right">
+          <div class="card" id="controlsCard" style="height:100%; box-sizing:border-box; display:flex; flex-direction:column;">
+            <p class="text-sm text-muted" style="margin-bottom: var(--spacing-3);">
+              点击按钮变换字母，使当前字母串等于目标字母串。
+            </p>
+
+            <div class="action-columns" id="actionGrid" style="flex:1;">
+              <div class="action-col">
+                <div class="action-col-header">
+                  <span class="col-dot" style="background:#6366F1;"></span>
+                  <span class="col-dot" style="background:#10B981;"></span>
+                  <span class="col-dot" style="background:#F59E0B;"></span>
+                  逐个增减
+                </div>
+                <div class="action-col-body" id="incDecCol"></div>
+              </div>
+              <div class="action-col">
+                <div class="action-col-header">
+                  <span>&#8596;</span> 整体变换
+                </div>
+                <div class="action-col-body" id="globalCol"></div>
+              </div>
+            </div>
+
+            <div class="skip-container" id="skipContainer" style="display:none; margin-top:var(--spacing-3); text-align:center;">
+              <p class="text-sm text-muted" style="margin-bottom:6px;">&#9432; 如果暂时做不出来，可以跳过继续下一题。</p>
+              <button class="btn btn-outline btn-sm" id="skipBtn" style="border-color:#F59E0B; color:#F59E0B;">
+                &#9888; 跳过此题
+              </button>
+            </div>
+
+            <div class="flex justify-between" style="margin-top: var(--spacing-4); padding-top: var(--spacing-3); border-top: 1px solid var(--color-border-light);">
+              <div class="flex items-center gap-3">
+                <button class="btn btn-ghost btn-sm" id="resetBtn" disabled>
+                  &#8634; 重置
+                </button>
+                <button class="btn-subtle-skip" id="subtleSkipBtn" title="放弃当前题目">
+                  &#10005; 放弃此题
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <button class="btn btn-secondary" id="checkBtn" disabled>
+                  检查答案
+                </button>
+                <button class="btn btn-primary" id="nextBtn" disabled>
+                  下一题 &#8594;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 实验后问卷 -->
+      <div class="card post-survey" id="postSurvey" style="display:none;">
+        <div class="card-header">
+          <h3 class="card-title">实验后问卷</h3>
+          <p class="card-subtitle">请根据真实感受回答，没有对错之分</p>
+        </div>
+        <div class="survey-body">
+          <div class="survey-q">
+            <p class="survey-q-title">1. 在答题过程中，你是否发现了比逐个增减更简单的解法（如直接反转或移位）？</p>
+            <div class="survey-options" id="surveyQ1">
+              <label class="survey-opt"><input type="radio" name="q1" value="yes"> 是</label>
+              <label class="survey-opt"><input type="radio" name="q1" value="no"> 否</label>
+              <label class="survey-opt"><input type="radio" name="q1" value="unsure"> 不确定</label>
+            </div>
+          </div>
+          <div class="survey-q" id="surveyQ2" style="display:none;">
+            <p class="survey-q-title">2. 你是从第几题开始意识到的？</p>
+            <div class="survey-options">
+              <label class="survey-opt"><input type="radio" name="q2" value="3"> 第 3 题</label>
+              <label class="survey-opt"><input type="radio" name="q2" value="4"> 第 4 题</label>
+              <label class="survey-opt"><input type="radio" name="q2" value="5"> 第 5 题</label>
+              <label class="survey-opt"><input type="radio" name="q2" value="6"> 第 6 题</label>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="surveySubmitBtn" disabled style="margin-top:var(--spacing-4);">
+            提交问卷
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../../tracking/event-logger.js"></script>
+<script src="anagram.js"></script>
+</body>
+</html>

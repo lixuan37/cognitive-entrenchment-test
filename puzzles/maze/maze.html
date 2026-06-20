@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>迷宫探索 — 认知固着度测试</title>
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="maze.css">
+</head>
+<body>
+<div class="page-wrapper">
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-logo">
+        <div class="icon">&#9881;</div>
+        认知固着度测试
+      </div>
+      <span class="header-badge" id="progressBadge">谜题 3/4</span>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+
+      <div class="progress-bar mb-4">
+        <div class="progress-bar-fill" id="globalProgress" style="width: 0%;"></div>
+      </div>
+      <p class="progress-text">谜题 3 / 4 — 迷宫探索</p>
+
+      <div class="card puzzle-header">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 id="questionLabel">第 1 题 / 共 6 题</h3>
+            <p class="text-sm text-muted" id="questionDesc">使用方向键从起点走到出口</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-muted">步数：</span>
+            <span class="font-mono font-bold" id="stepCount">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="puzzle-two-col">
+
+        <!-- 左栏：迷宫可视化 -->
+        <div class="puzzle-left">
+          <div class="card puzzle-canvas-card">
+            <div class="canvas-area">
+              <canvas id="mazeCanvas" width="464" height="464"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右栏：操作区 -->
+        <div class="puzzle-right">
+          <div class="card" id="controlsCard" style="height:100%; box-sizing:border-box; display:flex; flex-direction:column;">
+            <p class="text-sm text-muted" style="margin-bottom: var(--spacing-3);">
+              使用方向键（或下方按钮）从<span class="start-dot"></span> 移动到 <span class="exit-dot"></span>。
+            </p>
+
+            <!-- D-Pad 方向键 -->
+            <div class="dpad-container">
+              <div class="dpad-row">
+                <button class="dpad-btn" id="btnUp" title="上 (↑ / W)">▲</button>
+              </div>
+              <div class="dpad-row dpad-mid">
+                <button class="dpad-btn" id="btnLeft" title="左 (← / A)">◀</button>
+                <div class="dpad-center"></div>
+                <button class="dpad-btn" id="btnRight" title="右 (→ / D)">▶</button>
+              </div>
+              <div class="dpad-row">
+                <button class="dpad-btn" id="btnDown" title="下 (↓ / S)">▼</button>
+              </div>
+            </div>
+
+            <p class="text-xs text-muted" style="text-align:center; margin: var(--spacing-3) 0;">
+              键盘：方向键 / WASD
+            </p>
+
+            <div style="flex:1;"></div>
+
+            <div class="action-row">
+              <button class="btn" id="resetBtn" disabled>↺ 重走</button>
+              <button class="btn btn-primary" id="nextBtn" disabled>下一题 →</button>
+            </div>
+
+            <!-- 放弃按钮（时间门控） -->
+            <div id="skipContainer" style="text-align:center; margin-top:var(--spacing-2); display:none;">
+              <button class="btn btn-ghost" id="skipBtn">跳过此题</button>
+            </div>
+            <div style="text-align:center; margin-top:4px;">
+              <button id="subtleSkipBtn" style="display:none; background:none; border:none; color:#A8A29E; font-size:11px; cursor:pointer; text-decoration:underline;">放弃</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 实验后问卷（全屏覆盖层） -->
+      <div class="survey-overlay" id="surveyOverlay" style="display:none;">
+        <div class="survey-overlay-inner">
+          <div class="card">
+            <div class="survey-body">
+              <h3 style="margin-bottom: var(--spacing-1); color: var(--primary-color);">迷宫探索完成！</h3>
+              <p class="text-sm text-muted" style="margin-bottom: var(--spacing-4);">请回答以下问题：</p>
+              <div class="survey-q">
+                <p class="survey-q-title">Q1：在做迷宫谜题时，你是否发现了比贴墙走更快的捷径方法？</p>
+                <label class="survey-opt"><input type="radio" name="q1" value="yes"> 是的，我发现了</label>
+                <label class="survey-opt"><input type="radio" name="q1" value="no"> 没有发现</label>
+              </div>
+              <div class="survey-q" id="surveyQ2" style="display:none;">
+                <p class="survey-q-title">Q2：如果发现了，是从第几题开始意识到的？</p>
+                <label class="survey-opt"><input type="radio" name="q2" value="1"> 第 1 题</label>
+                <label class="survey-opt"><input type="radio" name="q2" value="2"> 第 2 题</label>
+                <label class="survey-opt"><input type="radio" name="q2" value="3"> 第 3 题</label>
+                <label class="survey-opt"><input type="radio" name="q2" value="4"> 第 4 题</label>
+                <label class="survey-opt"><input type="radio" name="q2" value="5"> 第 5 题</label>
+                <label class="survey-opt"><input type="radio" name="q2" value="6"> 第 6 题</label>
+              </div>
+              <div class="text-center mt-4">
+                <button class="btn btn-primary" id="surveySubmitBtn" disabled>提交</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 认知固着度研究项目 · 数据仅保存在本地</p>
+  </footer>
+</div>
+
+<script src="../../tracking/event-logger.js"></script>
+<script src="maze.js"></script>
+</body>
+</html>

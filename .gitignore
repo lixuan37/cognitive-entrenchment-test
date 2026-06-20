@@ -1,0 +1,27 @@
+# 缓存和临时文件
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+Thumbs.db
+
+# Python 虚拟环境
+venv/
+env/
+
+# 编辑器配置
+.vscode/
+.idea/
+
+# 实际参与者数据（隐私保护）
+data/participants/*.json
+!data/participants/demo_*.json
+
+# 自动生成的报告
+analysis/reports/*.html
+analysis/reports/*.md
+!analysis/reports/demo_*_可视化报告.html
+!analysis/reports/demo_*_报告.md
+
+# Node
+node_modules/

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据检索 - 认知固着测试</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F9FAFB;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+      color: #1F2937;
+    }
+    .subtitle {
+      color: #6B7280;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .input-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #374151;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #D1D5DB;
+      border-radius: 8px;
+      font-size: 18px;
+      letter-spacing: 4px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #4F46E5;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4F46E5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    button:hover {
+      background: #4338CA;
+    }
+    .result {
+      margin-top: 24px;
+      padding: 16px;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      border-radius: 8px;
+      display: none;
+    }
+    .result.show {
+      display: block;
+    }
+    .result h3 {
+      color: #166534;
+      margin-bottom: 8px;
+    }
+    .result pre {
+      background: white;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .download-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 16px;
+      background: #16A34A;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .error {
+      margin-top: 16px;
+      padding: 12px;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: 8px;
+      color: #DC2626;
+      display: none;
+    }
+    .error.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 数据检索</h1>
+    <p class="subtitle">输入参与者提供的提交码，获取测试数据</p>
+
+    <div class="input-group">
+      <label for="codeInput">提交码（6位）</label>
+      <input type="text" id="codeInput" placeholder="ABC123" maxlength="6">
+    </div>
+
+    <button onclick="retrieveData()">获取数据</button>
+
+    <div class="error" id="errorMsg"></div>
+
+    <div class="result" id="resultDiv">
+      <h3>✅ 数据获取成功！</h3>
+      <p style="margin-bottom:8px;font-size:13px;color:#6B7280;">完整 JSON 数据：</p>
+      <pre id="jsonData"></pre>
+      <a href="#" class="download-btn" id="downloadBtn" download="participant_data.json">⬇️ 下载 JSON 文件</a>
+    </div>
+  </div>
+
+  <script>
+    // 检查 URL 参数中是否有 key
+    var params = new URLSearchParams(window.location.search);
+    var key = params.get('key');
+    
+    if (key) {
+      // 从 API 读取数据
+      fetch('https://jsonstorage.net/api/items/' + key)
+        .then(function(res) {
+          if (!res.ok) throw new Error('数据不存在或已过期');
+          return res.text();
+        })
+        .then(function(rawData) {
+          // 显示数据
+          document.getElementById('jsonData').textContent = rawData;
+          
+          // 创建下载链接
+          var blob = new Blob([rawData], {type: 'application/json'});
+          var url = URL.createObjectURL(blob);
+          var downloadBtn = document.getElementById('downloadBtn');
+          downloadBtn.href = url;
+          downloadBtn.download = 'participant_data.json';
+          
+          document.getElementById('resultDiv').classList.add('show');
+          
+          // 隐藏输入区域
+          document.querySelector('.input-group').style.display = 'none';
+          document.querySelector('button').style.display = 'none';
+          document.querySelector('h1').textContent = '📊 数据已接收';
+          document.querySelector('.subtitle').textContent = '以下是参与者提交的测试数据';
+        })
+        .catch(function(err) {
+          document.querySelector('.subtitle').textContent = '❌ ' + err.message;
+          document.querySelector('.subtitle').style.color = '#DC2626';
+        });
+    } else if (window.location.hash && window.location.hash.length > 10) {
+      // 备用方案：从 URL Hash 读取数据
+      try {
+        var encoded = window.location.hash.substring(1);
+        var json = decodeURIComponent(atob(encoded));
+        
+        // 显示数据
+        document.getElementById('jsonData').textContent = json;
+        
+        // 创建下载链接
+        var blob = new Blob([json], {type: 'application/json'});
+        var url = URL.createObjectURL(blob);
+        var downloadBtn = document.getElementById('downloadBtn');
+        downloadBtn.href = url;
+        downloadBtn.download = 'participant_data.json';
+        
+        document.getElementById('resultDiv').classList.add('show');
+        
+        // 隐藏输入区域
+        document.querySelector('.input-group').style.display = 'none';
+        document.querySelector('button').style.display = 'none';
+        document.querySelector('h1').textContent = '📊 数据已接收';
+        document.querySelector('.subtitle').textContent = '以下是参与者提交的测试数据';
+      } catch(e) {
+        console.error('从 URL 读取数据失败：', e);
+        // 如果 hash 读取失败，显示输入界面
+      }
+    }
+
+    function retrieveData() {
+      var code = document.getElementById('codeInput').value.trim().toUpperCase();
+      var errorMsg = document.getElementById('errorMsg');
+      var resultDiv = document.getElementById('resultDiv');
+
+      // 隐藏之前的结果
+      errorMsg.classList.remove('show');
+      resultDiv.classList.remove('show');
+
+      if (!code || code.length !== 6) {
+        errorMsg.textContent = '❌ 请输入有效的6位提交码';
+        errorMsg.classList.add('show');
+        return;
+      }
+
+      // 从 localStorage 获取数据（同一设备方案）
+      var keyOrData = localStorage.getItem('ce_code_' + code);
+      
+      if (!keyOrData) {
+        errorMsg.textContent = '❌ 未找到对应数据。请检查提交码是否正确，或数据已过期。';
+        errorMsg.classList.add('show');
+        return;
+      }
+
+      // 如果存储的是 key（新方案），从 API 读取
+      if (keyOrData.length > 20) {
+        fetch('https://jsonstorage.net/api/items/' + keyOrData)
+          .then(function(res) {
+            if (!res.ok) throw new Error('数据不存在或已过期');
+            return res.text();
+          })
+          .then(function(rawData) {
+            document.getElementById('jsonData').textContent = rawData;
+            var blob = new Blob([rawData], {type: 'application/json'});
+            var url = URL.createObjectURL(blob);
+            var downloadBtn = document.getElementById('downloadBtn');
+            downloadBtn.href = url;
+            downloadBtn.download = 'participant_' + code + '_data.json';
+            resultDiv.classList.add('show');
+          })
+          .catch(function(err) {
+            errorMsg.textContent = '❌ ' + err.message;
+            errorMsg.classList.add('show');
+          });
+      } else {
+        // 旧方案：直接从 localStorage 读取
+        var data = localStorage.getItem('ce_submit_' + code);
+        if (data) {
+          var parsed = JSON.parse(data);
+          document.getElementById('jsonData').textContent = parsed.data;
+          var blob = new Blob([parsed.data], {type: 'application/json'});
+          var url = URL.createObjectURL(blob);
+          var downloadBtn = document.getElementById('downloadBtn');
+          downloadBtn.href = url;
+          downloadBtn.download = 'participant_' + code + '_data.json';
+          resultDiv.classList.add('show');
+        }
+      }
+    }
+
+    // 回车键触发检索
+    document.getElementById('codeInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        retrieveData();
+      }
+    });
+  </script>
+</body>
+</html>

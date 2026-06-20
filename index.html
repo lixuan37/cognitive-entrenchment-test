@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>认知固着度测试</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* --- 入口页面专属样式 --- */
+    .hero {
+      text-align: center;
+      padding: var(--spacing-12) 0 var(--spacing-8);
+    }
+
+    .hero-icon {
+      width: 72px;
+      height: 72px;
+      background: var(--color-accent-light);
+      border-radius: var(--radius-xl);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-6);
+    }
+
+    .hero-icon svg {
+      width: 40px;
+      height: 40px;
+      color: var(--color-accent);
+    }
+
+    .hero h1 {
+      margin-bottom: var(--spacing-4);
+    }
+
+    .hero p {
+      max-width: 560px;
+      margin: 0 auto var(--spacing-2);
+      font-size: var(--font-size-lg);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-4);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: var(--spacing-5);
+    }
+
+    .feature-card .icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-3);
+      font-size: 22px;
+    }
+
+    .feature-card h3 {
+      font-size: var(--font-size-base);
+      margin-bottom: var(--spacing-1);
+    }
+
+    .feature-card p {
+      font-size: var(--font-size-sm);
+      margin-bottom: 0;
+    }
+
+    .join-card {
+      text-align: center;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .join-card .card-title {
+      margin-bottom: var(--spacing-1);
+    }
+
+    .join-card .card-subtitle {
+      margin-bottom: var(--spacing-6);
+    }
+
+    .join-card .form-group {
+      text-align: left;
+    }
+
+    .join-card .btn {
+      margin-top: var(--spacing-2);
+    }
+
+    .footer-note {
+      text-align: center;
+      padding: var(--spacing-8) 0;
+    }
+
+    .footer-note p {
+      font-size: var(--font-size-xs);
+      margin-bottom: 0;
+    }
+
+    /* ID 输入数字键盘优化 */
+    #participantId {
+      font-size: var(--font-size-2xl);
+      letter-spacing: 0.1em;
+      text-align: center;
+      font-weight: 500;
+      color: var(--color-accent);
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-logo">
+        <div class="icon">&#9881;</div>
+        认知固着度测试
+      </div>
+      <span class="header-badge">v1.0</span>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h1>你的思维有多容易被锁住？</h1>
+        <p>你一定有过这种体验——解数学题时卡在某种思路上，明明有更简单的方法，但就是看不见。</p>
+        <p>这在心理学上叫做 <strong>Einstellung 效应</strong>。这不叫笨，这叫"认知固着"。而你即将完成一个测试，看看你的这把"锁"有多紧。</p>
+      </section>
+
+      <!-- 四大谜题预览 -->
+      <section class="features">
+        <div class="card feature-card">
+          <div class="icon-circle" style="background: #EEF2FF;">&#128167;</div>
+          <h3>数字水罐</h3>
+          <p>三个水罐 + 一个目标，测你能否跳出惯性思维</p>
+        </div>
+        <div class="card feature-card">
+          <div class="icon-circle" style="background: #FEF3C7;">&#128215;</div>
+          <h3>字母转换</h3>
+          <p>规则在你不注意的时候悄悄变了，看你多久察觉</p>
+        </div>
+        <div class="card feature-card">
+          <div class="icon-circle" style="background: #D1FAE5;">&#127937;</div>
+          <h3>迷宫探索</h3>
+          <p>复杂的迷宫里藏着一条捷径，你能找到吗？</p>
+        </div>
+        <div class="card feature-card">
+          <div class="icon-circle" style="background: #FEE2E2;">&#128290;</div>
+          <h3>数字序列</h3>
+          <p>习惯了一种规律之后，能否发现新的？</p>
+        </div>
+      </section>
+
+      <!-- 加入卡片 -->
+      <section class="card join-card">
+        <div class="card-title">准备好了吗？</div>
+        <div class="card-subtitle">
+          你将依次完成四个谜题：数字水罐 &rarr; 字母转换 &rarr; 迷宫探索 &rarr; 数字序列。<br>
+          全程大约需要 20-25 分钟，完成后可导出完整数据。
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="participantId">参与者编号</label>
+          <input
+            type="text"
+            id="participantId"
+            class="form-input"
+            placeholder="如：01"
+            maxlength="10"
+            autocomplete="off"
+            autofocus
+          >
+          <p class="form-hint">请输入测试管理员分配给你的编号</p>
+        </div>
+
+        <button id="startBtn" class="btn btn-primary btn-lg btn-block" disabled>
+          开始测试
+        </button>
+
+      <p class="text-xs text-muted mt-4">
+        测试数据仅保存在本地浏览器。完成所有谜题后，可在完成页复制 JSON 数据保存到本地。你的数据不会上传到任何服务器。
+      </p>
+
+    </section>
+
+      <!-- Footer -->
+      <div class="footer-note">
+        <p>基于 Luchins (1942) Einstellung 效应 &middot; Dane (2010) 认知固着理论</p>
+      </div>
+
+      <!-- 测试模式入口（底部小字） -->
+      <div style="text-align:center; padding:var(--spacing-4) 0 var(--spacing-8);">
+        <a href="complete.html?test=1" style="color:#9CA3AF; font-size:12px; text-decoration:none; opacity:0.6;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">
+          开发者测试模式 → 直接查看完成页（随机数据）
+        </a>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="tracking/event-logger.js"></script>
+<script>
+(function () {
+  var idInput = document.getElementById('participantId');
+  var startBtn = document.getElementById('startBtn');
+
+  // 启用/禁用按钮
+  idInput.addEventListener('input', function () {
+    startBtn.disabled = this.value.trim().length === 0;
+  });
+
+  // 回车也可以开始
+  idInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && this.value.trim()) startTest();
+  });
+
+  startBtn.addEventListener('click', startTest);
+
+  function startTest() {
+    var rawId = idInput.value.trim();
+    if (!rawId) return;
+    var userId = 'participant_' + rawId.replace(/[^a-zA-Z0-9]/g, '_');
+    EventLogger.initSession(userId);
+    window.location.href = 'puzzles/water-jug/water-jug.html';
+  }
+})();
+</script>
+</body>
+</html>

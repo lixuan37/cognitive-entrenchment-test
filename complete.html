@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试完成 — 认知固着度测试</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="complete.css">
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-logo">
+        <div class="icon">&#9881;</div>
+        认知固着度测试
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Hero -->
+      <section class="complete-hero">
+        <div class="complete-icon">&#127881;</div>
+        <h1>测试完成！</h1>
+        <p class="complete-subtitle">
+          感谢你的参与。以下是你的测试数据摘要与行为可视化分析。
+        </p>
+      </section>
+
+      <!-- ========== 数据摘要 ========== -->
+      <section class="card complete-summary" id="summaryCard">
+        <div class="card-header">
+          <div class="card-title">数据摘要</div>
+          <div class="card-subtitle">本次测试的关键指标</div>
+        </div>
+        <div class="summary-grid" id="summaryGrid"></div>
+      </section>
+
+      <!-- ========== 各谜题明细 ========== -->
+      <section class="card" id="breakdownCard">
+        <div class="card-header">
+          <div class="card-title">谜题明细</div>
+          <div class="card-subtitle">每道谜题的完成情况</div>
+        </div>
+        <div id="puzzleBreakdown" class="puzzle-breakdown"></div>
+      </section>
+
+      <!-- ========== 你的认知固着分析 ========== -->
+      <section class="card" id="feedbackCard">
+        <div class="card-header">
+          <div class="card-title">你的认知固着分析</div>
+          <div class="card-subtitle">基于你的操作数据，以下是个性化的认知固着评估</div>
+        </div>
+        <div id="feedbackContent" class="feedback-content"></div>
+      </section>
+
+      <!-- ========== 数据可视化 ========== -->
+      <section class="card" id="vizCard">
+        <div class="card-header">
+          <div class="card-title">行为数据可视化</div>
+          <div class="card-subtitle">基于操作事件的认知行为分析图表</div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="charts-grid">
+
+          <!-- 图表 1：各谜题操作步数柱状图 -->
+          <div class="chart-box">
+            <div class="chart-title">各谜题步数指数（归一化）</div>
+            <div class="chart-subtitle">指数 = log10(步数+1)×100，压缩大数值使对比更合理</div>
+            <svg id="chartSteps" class="chart-svg" viewBox="0 0 420 220" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+
+          <!-- 图表 2：放弃/跳过次数 -->
+          <div class="chart-box">
+            <div class="chart-title">各谜题放弃次数</div>
+            <div class="chart-subtitle">放弃是固着度的直接指标</div>
+            <svg id="chartGiveup" class="chart-svg" viewBox="0 0 420 220" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+
+          <!-- 图表 3：各谜题认知固着阶段分析（4个独立图表） -->
+          <div class="chart-box">
+            <div class="chart-title">数字水罐 — 认知固着阶段</div>
+            <div class="chart-subtitle">惯性期 → 关键期 → 恢复期</div>
+            <svg id="chartTrend_water_jug" class="chart-svg" viewBox="0 0 420 220" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+
+          <div class="chart-box">
+            <div class="chart-title">字母转换 — 认知固着阶段</div>
+            <div class="chart-subtitle">惯性期 → 关键期 → 恢复期</div>
+            <svg id="chartTrend_anagram" class="chart-svg" viewBox="0 0 420 220" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+
+          <div class="chart-box">
+            <div class="chart-title">迷宫探索 — 认知固着阶段</div>
+            <div class="chart-subtitle">惯性期 → 关键期 → 恢复期</div>
+            <svg id="chartTrend_maze" class="chart-svg" viewBox="0 0 420 220" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+
+          <div class="chart-box">
+            <div class="chart-title">数字序列 — 认知固着阶段</div>
+            <div class="chart-subtitle">惯性期 → 关键期 → 恢复期</div>
+            <svg id="chartTrend_sequence" class="chart-svg" viewBox="0 0 420 220" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+
+          <!-- 图表 4：完成 vs 放弃比例 -->
+          <div class="chart-box">
+            <div class="chart-title">答题完成率</div>
+            <div class="chart-subtitle">各谜题实际完成题数占比</div>
+            <svg id="chartComplete" class="chart-svg" viewBox="0 0 420 220" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+
+          <!-- 图表 5：重置次数 -->
+          <div class="chart-box">
+            <div class="chart-title">各谜题重置次数</div>
+            <div class="chart-subtitle">频繁重置反映解题困难</div>
+            <svg id="chartReset" class="chart-svg" viewBox="0 0 420 220" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========== 什么是认知固着？ ========== -->
+      <section class="card" id="educationCard">
+        <div class="card-header">
+          <div class="card-title">什么是认知固着？</div>
+          <div class="card-subtitle">了解这个心理学现象，以及为什么这个测试很重要</div>
+        </div>
+        <div class="education-content">
+          <h3>🧠 Einstellung 效应</h3>
+          <p>1942年，心理学家 Abraham Luchins 发现了一个有趣的现象：</p>
+          <p>当人们用某种方法成功解决了一系列问题后，即使出现了更简单的方法，他们也会<strong>固着</strong>在原来的方法上，看不见新的可能性。</p>
+          
+          <div class="example-box">
+            <div class="example-title">💡 经典实验（水罐问题）</div>
+            <p>参与者需要用三个水罐（容量分别为 21、127、3 升）量出 exactly 100 升的水。</p>
+            <p>解法：127 - 21 - 3 - 3 = 100（复杂方法）</p>
+            <p>后面出现了更简单的问题：用 18、43、10 升的罐子量 23 升。</p>
+            <p>更简单的解法：43 - 18 - 2 = 23（直接用两个罐子）</p>
+            <p>但很多人还是用了复杂方法——因为他们已经"固着"了。</p>
+          </div>
+
+          <h3>📊 你的测试结果意味着什么？</h3>
+          <div class="meaning-grid">
+            <div class="meaning-item">
+              <div class="meaning-icon">✅</div>
+              <div class="meaning-text">
+                <strong>关键期步数下降</strong><br>
+                你发现了捷径！说明你的认知固着程度较低，能够灵活调整策略。
+              </div>
+            </div>
+            <div class="meaning-item">
+              <div class="meaning-icon">⚠️</div>
+              <div class="meaning-text">
+                <strong>关键期步数没有下降</strong><br>
+                你可能固着在了原来的方法上。这不代表你"笨"——这是一种非常普遍的思维习惯。
+              </div>
+            </div>
+            <div class="meaning-item">
+              <div class="meaning-icon">🔄</div>
+              <div class="meaning-text">
+                <strong>恢复期步数保持低位</strong><br>
+                你成功打破了固着，新的思维方式已经内化。
+              </div>
+            </div>
+            <div class="meaning-item">
+              <div class="meaning-icon">🚫</div>
+              <div class="meaning-text">
+                <strong>放弃次数多</strong><br>
+                遇到固着时选择放弃，可能意味着你更倾向于"重新开始"而不是"坚持错误"。
+              </div>
+            </div>
+          </div>
+
+          <h3>🎯 如何减少认知固着？</h3>
+          <ul class="tips-list">
+            <li><strong>刻意暂停</strong>：解决几个相似问题后，停下来问自己："有没有更简单的方法？"</li>
+            <li><strong>多角度思考</strong>：遇到问题时，强制自己想出至少 3 种不同的解决方法。</li>
+            <li><strong>反思习惯</strong>：定期回顾自己的决策，看看是否有"惯性思维"的痕迹。</li>
+            <li><strong>接触新领域</strong>：学习不同领域的知识，避免思维过于单一。</li>
+          </ul>
+
+          <p class="education-footer">
+            <strong>记住：</strong>认知固着不是缺陷，而是大脑为了节省能量而使用的"思维捷径"。意识到它的存在，就是打破它的第一步。
+          </p>
+        </div>
+      </section>
+
+      <!-- ========== 导出区域 ========== -->
+      <section class="card complete-download" id="exportCard">
+        <div class="card-header">
+          <div class="card-title">提交测试数据</div>
+          <div class="card-subtitle">
+            完成测试后，请选择一种方式提交数据给研究员。
+          </div>
+        </div>
+
+        <!-- 选择提交方式 -->
+        <div style="margin-bottom:20px;">
+          <div style="font-weight:600;margin-bottom:12px;">选择提交方式：</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="showSubmitMethod('qr')" id="btnMethodQR">
+              📱 方式一：生成二维码（推荐）
+            </button>
+            <button class="btn btn-secondary" onclick="showSubmitMethod('manual')" id="btnMethodManual">
+              📋 方式二：手动导出（备用）
+            </button>
+          </div>
+        </div>
+
+        <!-- 方式一：生成二维码 -->
+        <div id="methodQR" style="display:none;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:16px;margin-bottom:20px;">
+          <div style="font-weight:600;color:#1E40AF;margin-bottom:8px;">📱 生成提交码和二维码</div>
+          <p style="font-size:13px;color:#1E40AF;margin-bottom:12px;">
+            点击按钮生成6位提交码和二维码。将提交码告诉研究员，或让研究员扫描二维码。
+          </p>
+          <button class="btn btn-primary" onclick="generateSubmitCode()" id="btnGenerateQR" style="background:#2563EB;">
+            生成提交码和二维码
+          </button>
+          <div id="qrResult" style="display:none;margin-top:16px;">
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px;">✅ 已生成！</div>
+            <div style="background:#FFF;padding:12px;border-radius:6px;border:1px solid #BFDBFE;">
+              <div style="font-size:13px;color:#1E40AF;margin-bottom:4px;">提交码（告诉研究员）：</div>
+              <div id="submitCode" style="font-size:24px;font-weight:700;letter-spacing:4px;color:#1E40AF;margin-bottom:12px;"></div>
+              <div style="font-size:13px;color:#1E40AF;margin-bottom:8px;">二维码（研究员扫描）：</div>
+              <div id="qrCodeImage" style="text-align:center;"></div>
+            </div>
+            <p style="font-size:12px;color:#6B7280;margin-top:8px;">
+              研究员打开 retrieve.html 并输入提交码，或扫描二维码直接访问数据。
+            </p>
+          </div>
+        </div>
+
+        <!-- 方式二：手动导出 -->
+        <div id="methodManual" style="display:none;margin-bottom:16px;">
+          <div style="font-weight:600;color:#6B7280;margin-bottom:8px;">📋 手动导出数据</div>
+          <p style="font-size:13px;color:#6B7280;margin-bottom:12px;">
+            复制数据到剪贴板，通过微信/邮件发送。
+          </p>
+          <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;align-items:center;">
+            <button id="copyBtn" class="btn btn-primary btn-lg">
+              📋 复制 JSON 到剪贴板
+            </button>
+            <button id="saveBtn" class="btn btn-secondary btn-lg">
+              ✅ 标记为已提交
+            </button>
+          </div>
+
+          <p id="copyStatus" class="form-hint" style="margin-top:8px;color:#10B981;display:none;">
+            ✔️ 已复制到剪贴板！请粘贴到微信/邮件发送。
+          </p>
+
+          <div style="margin-top:16px;">
+            <label style="font-weight:600;font-size:14px;display:block;margin-bottom:8px;">
+              完整 JSON 数据（全选后 Ctrl+C 复制）
+            </label>
+            <textarea id="jsonOutput" readonly
+              style="width:100%;height:180px;font-family:'Consolas','Monaco','Courier New',monospace;font-size:12px;line-height:1.5;border:1px solid #d1d5db;border-radius:8px;padding:12px;resize:vertical;background:#f9fafb;color:#1f2937;"
+              spellcheck="false"></textarea>
+            <div id="filenamePreview" style="font-size:12px;color:#6B7280;margin-top:4px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 已完成提示 -->
+      <section class="card" id="doneCard" style="display:none;">
+        <div style="text-align:center;padding:var(--spacing-8) 0;">
+          <div style="font-size:48px;margin-bottom:var(--spacing-4);">&#9989;</div>
+          <h2 style="margin-bottom:var(--spacing-2);">数据已提交</h2>
+          <p class="text-muted" style="margin-bottom:var(--spacing-6);">
+            请确认已将 JSON 文件交给研究员。<br>你可以关闭此页面。
+          </p>
+          <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+            返回首页
+          </button>
+        </div>
+      </section>
+
+      <!-- 无数据提示 -->
+      <section class="card" id="noDataCard" style="display:none;">
+        <div style="text-align:center;padding:var(--spacing-8) 0;">
+          <div style="font-size:48px;margin-bottom:var(--spacing-4);">&#9888;&#65039;</div>
+          <h2>未找到测试数据</h2>
+          <p class="text-muted" style="margin-bottom:var(--spacing-6);">
+            可能的原因：<br>
+            1. 你尚未完成全部谜题<br>
+            2. 浏览器缓存已被清除<br>
+            3. 你直接访问了这个页面
+          </p>
+          <button class="btn btn-primary" onclick="window.location.href='index.html'">
+            返回首页重新开始
+          </button>
+        </div>
+      </section>
+
+      <div class="footer-note">
+        <p class="text-xs text-muted">
+          基于 Luchins (1942) Einstellung 效应 &middot; 数据仅保存在本地浏览器
+        </p>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="tracking/event-logger.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ==========================================
+  // 工具函数
+  // ==========================================
+  function fmtMs(ms) {
+    if (!ms || ms <= 0) return '—';
+    var s = Math.round(ms / 1000);
+    var m = Math.floor(s / 60);
+    s = s % 60;
+    return m > 0 ? m + ' 分 ' + s + ' 秒' : s + ' 秒';
+  }
+
+  // ==========================================
+  // 测试模式：?test=1 时生成随机数据
+  // ==========================================
+  (function maybeGenerateTestData() {
+    var params = new URLSearchParams(window.location.search);
+    if (!params.get('test')) return;
+
+    // 随机数据生成器
+    function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function randStep(base, spread) { return Math.max(1, Math.round(base + (Math.random() - 0.5) * spread)); }
+
+    var now = Date.now();
+    var puzzleConfigs = [
+      { id: 'water_jug',  q: 8, name: '数字水罐', baseSteps: 6,  spread: 5,  baseGiveUp: 1, baseReset: 2 },
+      { id: 'anagram',    q: 6, name: '字母转换', baseSteps: 4,  spread: 4,  baseGiveUp: 0, baseReset: 1 },
+      { id: 'maze',       q: 6, name: '迷宫探索', baseSteps: 40, spread: 30, baseGiveUp: 2, baseReset: 3 },
+      { id: 'sequence',   q: 6, name: '数字序列', baseSteps: 5,  spread: 4,  baseGiveUp: 0, baseReset: 1 },
+    ];
+
+    var testEvents = [];
+    var userId = 'test_' + Date.now().toString(36);
+
+    puzzleConfigs.forEach(function (pc) {
+      for (var q = 1; q <= pc.q; q++) {
+        var phase = q <= 2 ? 'inertia' : (q <= 4 ? 'critical' : 'recovery');
+        var steps = randStep(pc.baseSteps, pc.spread);
+        // 关键期步数下降（认知固着效应）
+        if (phase === 'critical') steps = Math.max(1, Math.round(steps * 0.6));
+        if (phase === 'recovery') steps = Math.max(1, Math.round(steps * 1.1));
+
+        var willGiveUp = (q <= pc.baseGiveUp) && Math.random() < 0.5;
+        var willReset  = (q <= pc.baseReset)  && Math.random() < 0.4;
+
+        testEvents.push({
+          userId: userId, puzzleId: pc.id, questionId: q,
+          timestamp: now - (pc.q - q + 1) * 60000,
+          eventType: 'puzzle_start', actionData: null, correct: null, latency: 500
+        });
+
+        // 迷宫：不记录 action 事件，步数在 submit/give_up 的 actionData.steps 中
+        if (pc.id !== 'maze') {
+          for (var a = 0; a < steps; a++) {
+            testEvents.push({
+              userId: userId, puzzleId: pc.id, questionId: q,
+              timestamp: now - (pc.q - q) * 60000 + a * 2000,
+              eventType: 'action', actionData: { actionType: 'step' }, correct: null, latency: 800
+            });
+          }
+        }
+
+        if (willGiveUp) {
+          testEvents.push({
+            userId: userId, puzzleId: pc.id, questionId: q,
+            timestamp: now - (pc.q - q) * 60000 + 30000,
+            eventType: 'give_up',
+            actionData: pc.id === 'maze' ? { steps: steps, phase: phase } : {},
+            correct: null, latency: 5000
+          });
+        } else {
+          testEvents.push({
+            userId: userId, puzzleId: pc.id, questionId: q,
+            timestamp: now - (pc.q - q) * 60000 + 40000,
+            eventType: 'submit',
+            actionData: pc.id === 'maze'
+              ? { steps: steps, method: steps <= 30 ? 'shortcut' : 'wallFollow', phase: phase }
+              : { steps: steps },
+            correct: true, latency: 1200
+          });
+        }
+
+        if (willReset) {
+          testEvents.push({
+            userId: userId, puzzleId: pc.id, questionId: q,
+            timestamp: now - (pc.q - q) * 60000 + 10000,
+            eventType: 'reset', actionData: null, correct: null, latency: 2000
+          });
+        }
+      }
+    });
+
+    var testData = {
+      session: { userId: userId, startedAt: now - 1800000, completedAt: now },
+      events: testEvents
+    };
+    localStorage.setItem('ce_events', JSON.stringify(testData));
+    console.log('[测试模式] 已生成随机数据，' + testEvents.length + ' 个事件');
+  })();
+
+  // ==========================================
+  // 读取数据
+  // ==========================================
+  var raw = localStorage.getItem('ce_events');
+  var session = null, events = [];
+
+  if (raw) {
+    try {
+      var data = JSON.parse(raw);
+      session = data.session || null;
+      events  = data.events  || [];
+    } catch (e) { /* ignore */ }
+  }
+
+  if (!session || events.length === 0) {
+    document.getElementById('summaryCard').style.display = 'none';
+    document.getElementById('breakdownCard').style.display = 'none';
+    document.getElementById('vizCard').style.display = 'none';
+    document.getElementById('exportCard').style.display = 'none';
+    document.getElementById('noDataCard').style.display = '';
+    return;
+  }
+
+  // ==========================================
+  // 谜题配置
+  // ==========================================
+  var PUZZLE_IDS   = ['water_jug', 'anagram', 'maze', 'sequence'];
+  var PUZZLE_NAMES = { water_jug: '水罐', anagram: '字母', maze: '迷宫', sequence: '序列' };
+  var PUZZLE_COLORS = {
+    water_jug: '#6366F1',
+    anagram:   '#F59E0B',
+    maze:      '#10B981',
+    sequence:  '#EF4444'
+  };
+
+  // 按谜题分组
+  var byPuzzle = {};
+  PUZZLE_IDS.forEach(function (pid) { byPuzzle[pid] = []; });
+  events.forEach(function (e) {
+    if (byPuzzle[e.puzzleId]) byPuzzle[e.puzzleId].push(e);
+  });
+
+  // ==========================================
+  // 统计各谜题指标
+  // ==========================================
+  var stats = {};
+  PUZZLE_IDS.forEach(function (pid) {
+    var evts = byPuzzle[pid];
+    var byQ  = {};  // questionId → events[]
+
+    evts.forEach(function (e) {
+      var q = e.questionId || 0;
+      if (!byQ[q]) byQ[q] = [];
+      byQ[q].push(e);
+    });
+
+    var qs = Object.keys(byQ).map(Number).sort(function (a, b) { return a - b; });
+    var totalQ    = qs.length > 0 ? Math.max.apply(null, qs) : 0;
+
+    // 迷宫特殊处理：步数来自 submit/give_up 事件的 actionData.steps
+    // 其他谜题：步数来自 eventType === 'action'
+    var actions, stepsPerQ;
+    if (pid === 'maze') {
+      stepsPerQ = {};
+      actions = 0;
+      qs.forEach(function (q) {
+        var stepSum = 0;
+        byQ[q].forEach(function (e) {
+          if ((e.eventType === 'submit' || e.eventType === 'give_up') && e.actionData && typeof e.actionData.steps === 'number') {
+            stepSum += e.actionData.steps;
+          }
+        });
+        stepsPerQ[q] = stepSum;
+        actions += stepSum;
+      });
+    } else {
+      actions = evts.filter(function (e) { return e.eventType === 'action'; }).length;
+      stepsPerQ = {};
+      qs.forEach(function (q) {
+        stepsPerQ[q] = byQ[q].filter(function (e) { return e.eventType === 'action'; }).length;
+      });
+    }
+
+    var giveUps   = evts.filter(function (e) { return e.eventType === 'give_up'; }).length;
+    var resets    = evts.filter(function (e) { return e.eventType === 'reset'; }).length;
+    var submits   = evts.filter(function (e) { return e.eventType === 'submit'; }).length;
+
+    stats[pid] = {
+      totalEvents: evts.length,
+      actions:     actions,
+      giveUps:     giveUps,
+      resets:      resets,
+      submits:     submits,
+      totalQ:      totalQ,
+      avgSteps:    actions > 0 && totalQ > 0 ? (actions / totalQ) : 0,
+      stepsPerQ:   stepsPerQ,
+      qs:          qs
+    };
+  });
+
+  // ==========================================
+  // 摘要网格
+  // ==========================================
+  var totalTime = session.completedAt
+    ? (session.completedAt - session.startedAt)
+    : (Date.now() - session.startedAt);
+
+  var totalActions = events.filter(function (e) { return e.eventType === 'action'; }).length;
+  // 补充迷宫步数（迷宫不记录 action 事件，步数在 submit/give_up 的 actionData.steps 中）
+  events.forEach(function (e) {
+    if (e.puzzleId === 'maze' && (e.eventType === 'submit' || e.eventType === 'give_up') && e.actionData && typeof e.actionData.steps === 'number') {
+      totalActions += e.actionData.steps;
+    }
+  });
+  var totalGiveUps = events.filter(function (e) { return e.eventType === 'give_up'; }).length;
+
+  document.getElementById('summaryGrid').innerHTML =
+    mkStat(totalActions, '总操作次数', '#6366F1') +
+    mkStat(PUZZLE_IDS.filter(function (p) { return byPuzzle[p].length > 0; }).length + '/4', '完成谜题数', '#10B981') +
+    mkStat(fmtMs(totalTime), '总用时', '#F59E0B') +
+    mkStat(totalGiveUps, '放弃次数', '#EF4444') +
+    mkStat(session.userId ? session.userId.replace('participant_', '') : '—', '参与者编号', '#6366F1');
+
+  function mkStat(val, label, color) {
+    return '<div class="summary-item">' +
+      '<div class="summary-value" style="color:' + color + '">' + val + '</div>' +
+      '<div class="summary-label">' + label + '</div>' +
+    '</div>';
+  }
+
+  // ==========================================
+  // 谜题明细
+  // ==========================================
+  var bdHtml = '';
+  PUZZLE_IDS.forEach(function (pid) {
+    var s = stats[pid];
+    if (!s || s.totalEvents === 0) return;
+    var giveUpSpan = s.giveUps > 0
+      ? '<span class="bd-stat" style="color:#EF4444;">' + s.giveUps + ' 次放弃</span>'
+      : '<span class="bd-stat" style="color:#10B981;">无放弃</span>';
+    bdHtml +=
+      '<div class="bd-row">' +
+        '<div class="bd-name">' +
+          '<span class="bd-dot" style="background:' + PUZZLE_COLORS[pid] + '"></span>' +
+          PUZZLE_NAMES[pid] +
+        '</div>' +
+        '<div class="bd-stats">' +
+          '<span class="bd-stat">' + s.totalQ + ' 题</span>' +
+          '<span class="bd-stat">' + s.actions + ' 步</span>' +
+          '<span class="bd-stat">均 ' + s.avgSteps.toFixed(1) + ' 步/题</span>' +
+          giveUpSpan +
+          '<span class="bd-stat" style="color:#6B7280;">' + s.resets + ' 次重置</span>' +
+        '</div>' +
+      '</div>';
+  });
+  document.getElementById('puzzleBreakdown').innerHTML = bdHtml || '<p class="text-muted">暂无详细数据</p>';
+
+  // ==========================================
+  // JSON 导出
+  // ==========================================
+  var exportData = {
+    session:  session,
+    events:   events,
+    metadata: {
+      totalEvents: events.length,
+      puzzlesCompleted: PUZZLE_IDS.filter(function (p) { return byPuzzle[p].length > 0; }),
+      duration: totalTime,
+      exportedAt: new Date().toISOString()
+    }
+  };
+  var jsonText = JSON.stringify(exportData, null, 2);
+  document.getElementById('jsonOutput').value = jsonText;
+  var fname = (session.userId || 'participant') + '_完整数据.json';
+  document.getElementById('filenamePreview').textContent = fname;
+
+  // 复制按钮
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    var ta = document.getElementById('jsonOutput');
+    ta.select(); ta.setSelectionRange(0, 999999);
+    var copied = false;
+    try { copied = document.execCommand('copy'); } catch (e) {}
+    if (!copied && navigator.clipboard) {
+      navigator.clipboard.writeText(jsonText).then(showCopied).catch(function () {
+        alert('复制失败，请手动选中文本框后 Ctrl+C。');
+      });
+      return;
+    }
+    if (copied) showCopied();
+  });
+
+  function showCopied() {
+    var s = document.getElementById('copyStatus');
+    s.style.display = '';
+    setTimeout(function () { s.style.display = 'none'; }, 4000);
+  }
+
+  // 标记完成按钮
+  document.getElementById('saveBtn').addEventListener('click', function () {
+    localStorage.removeItem('ce_events');
+    document.getElementById('exportCard').style.display = 'none';
+    document.getElementById('summaryCard').style.display = 'none';
+    document.getElementById('breakdownCard').style.display = 'none';
+    document.getElementById('vizCard').style.display = 'none';
+    document.getElementById('doneCard').style.display = '';
+  });
+
+  // ==========================================
+  // ============ 数据可视化 ================
+  // ==========================================
+
+  var CHART_COLORS = ['#6366F1', '#F59E0B', '#10B981', '#EF4444'];
+
+  // ---------- SVG 工具函数 ----------
+  function svgEl(tag, attrs) {
+    var NS = 'http://www.w3.org/2000/svg';
+    var el = document.createElementNS(NS, tag);
+    Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+    return el;
+  }
+  function svgText(x, y, txt, opts) {
+    var el = svgEl('text', Object.assign({ x: x, y: y, 'font-size': 11, fill: '#374151', 'font-family': 'sans-serif' }, opts || {}));
+    el.textContent = txt;
+    return el;
+  }
+
+    // ---------- 图表 1：各谜题步数指数（归一化）----------
+  (function drawSteps() {
+    var svg = document.getElementById('chartSteps');
+    var W = 420, H = 220;
+    var padL = 62, padR = 14, padT = 20, padB = 50;
+    var chartW = W - padL - padR, chartH = H - padT - padB;
+
+    // 步数指数 = log10(avgSteps + 1) * 100，压缩大数值范围
+    function stepIndex(s) { return Math.log10(s + 1) * 100; }
+
+    var vals = PUZZLE_IDS.map(function (p) { return stats[p] ? stepIndex(stats[p].avgSteps) : 0; });
+    var maxV = Math.max.apply(null, vals) || 1;
+    var barW = chartW / PUZZLE_IDS.length;
+
+    // Y 轴网格线（4 等分）
+    for (var gi = 0; gi <= 4; gi++) {
+      var f = gi / 4;
+      var y = padT + chartH * (1 - f);
+      svg.appendChild(svgEl('line', { x1: padL, y1: y, x2: padL + chartW, y2: y, stroke: '#E5E7EB', 'stroke-width': 1 }));
+      // 反算原始步数作为标签（取整数）
+      var rawAtGrid = Math.round(Math.pow(10, (maxV * f) / 100) - 1);
+      svg.appendChild(svgText(padL - 6, y + 4, rawAtGrid, { 'text-anchor': 'end', fill: '#9CA3AF', 'font-size': 10 }));
+    }
+
+    PUZZLE_IDS.forEach(function (pid, i) {
+      var s   = stats[pid];
+      var v   = vals[i];
+      var bh  = (v / maxV) * chartH;
+      var x   = padL + i * barW + barW * 0.15;
+      var bw  = barW * 0.7;
+      var y   = padT + chartH - bh;
+
+      var rect = svgEl('rect', { x: x, y: y, width: bw, height: bh || 1, fill: PUZZLE_COLORS[pid], rx: 4, opacity: 0.88 });
+      svg.appendChild(rect);
+
+      if (s && s.avgSteps > 0) {
+        // 柱顶显示：指数（原始步数）
+        var label = v.toFixed(0) + ' (' + s.avgSteps.toFixed(1) + '步)';
+        svg.appendChild(svgText(x + bw / 2, y - 4, label, { 'text-anchor': 'middle', fill: PUZZLE_COLORS[pid], 'font-weight': 'bold', 'font-size': 10 }));
+      }
+
+      svg.appendChild(svgText(x + bw / 2, padT + chartH + 18, PUZZLE_NAMES[pid], { 'text-anchor': 'middle', 'font-size': 12, fill: '#374151' }));
+    });
+
+    // 轴线
+    svg.appendChild(svgEl('line', { x1: padL, y1: padT, x2: padL, y2: padT + chartH, stroke: '#D1D5DB', 'stroke-width': 1 }));
+    svg.appendChild(svgEl('line', { x1: padL, y1: padT + chartH, x2: padL + chartW, y2: padT + chartH, stroke: '#D1D5DB', 'stroke-width': 1 }));
+    // Y 轴标签
+    svg.appendChild(svgText(padL - 18, padT + chartH / 2, '步数指数', { 'text-anchor': 'middle', fill: '#9CA3AF', 'font-size': 10, transform: 'rotate(-90,' + (padL - 18) + ',' + (padT + chartH / 2) + ')' }));
+    // X 轴说明
+    svg.appendChild(svgText(padL + chartW / 2, padT + chartH + 40, '指数 = log10(步数+1)×100，数值越大步数越多', { 'text-anchor': 'middle', fill: '#9CA3AF', 'font-size': 9 }));
+  })();
+
+  // ---------- 图表 2：放弃次数 ----------
+  (function drawGiveup() {
+    var svg = document.getElementById('chartGiveup');
+    var W = 420, H = 220;
+    var padL = 42, padR = 14, padT = 20, padB = 50;
+    var chartW = W - padL - padR, chartH = H - padT - padB;
+
+    var vals = PUZZLE_IDS.map(function (p) { return stats[p] ? stats[p].giveUps : 0; });
+    var maxV = Math.max.apply(null, vals) || 1;
+    var barW = chartW / PUZZLE_IDS.length;
+
+    [0.25, 0.5, 0.75, 1].forEach(function (f) {
+      var y = padT + chartH * (1 - f);
+      svg.appendChild(svgEl('line', { x1: padL, y1: y, x2: padL + chartW, y2: y, stroke: '#E5E7EB', 'stroke-width': 1 }));
+      svg.appendChild(svgText(padL - 4, y + 4, Math.round(maxV * f), { 'text-anchor': 'end', fill: '#9CA3AF', 'font-size': 10 }));
+    });
+
+    PUZZLE_IDS.forEach(function (pid, i) {
+      var v  = vals[i];
+      var bh = (v / maxV) * chartH;
+      var x  = padL + i * barW + barW * 0.15;
+      var bw = barW * 0.7;
+      var y  = padT + chartH - bh;
+      var col = v > 0 ? '#EF4444' : '#E5E7EB';
+
+      svg.appendChild(svgEl('rect', { x: x, y: y, width: bw, height: bh || 2, fill: col, rx: 4, opacity: 0.85 }));
+      if (v > 0) {
+        svg.appendChild(svgText(x + bw / 2, y - 4, v, { 'text-anchor': 'middle', fill: '#EF4444', 'font-weight': 'bold', 'font-size': 12 }));
+      }
+      svg.appendChild(svgText(x + bw / 2, padT + chartH + 18, PUZZLE_NAMES[pid], { 'text-anchor': 'middle', 'font-size': 12, fill: '#374151' }));
+    });
+
+    svg.appendChild(svgEl('line', { x1: padL, y1: padT, x2: padL, y2: padT + chartH, stroke: '#D1D5DB', 'stroke-width': 1 }));
+    svg.appendChild(svgEl('line', { x1: padL, y1: padT + chartH, x2: padL + chartW, y2: padT + chartH, stroke: '#D1D5DB', 'stroke-width': 1 }));
+  })();
+
+    // ---------- 图表 3：各谜题认知固着阶段分析（4个独立图表）----------
+  PUZZLE_IDS.forEach(function (pid) {
+    var svg = document.getElementById('chartTrend_' + pid);
+    if (!svg) return;  // 防御：SVG 元素不存在时跳过
+    var W = 420, H = 220;
+    var padL = 64, padR = 14, padT = 20, padB = 50;
+    var chartW = W - padL - padR, chartH = H - padT - padB;
+
+    // 步数指数 = log10(steps + 1) * 100
+    function stepIndex(s) { return Math.log10(s + 1) * 100; }
+
+    var s = stats[pid];
+    if (!s || s.totalEvents === 0) {
+      // 无数据：显示提示
+      svg.appendChild(svgText(padL + chartW / 2, padT + chartH / 2, '暂无数据', {
+        'text-anchor': 'middle', fill: '#9CA3AF', 'font-size': 14
+      }));
+      return;
+    }
+
+    // 计算该谜题各阶段的平均步数指数
+    var stageSum   = [0, 0, 0];  // [惯性期, 关键期, 恢复期]
+    var stageCount = [0, 0, 0];
+
+    s.qs.forEach(function (q) {
+      var v = s.stepsPerQ[q] || 0;
+      if (v === 0) return;
+      var idx = stepIndex(v);
+      var stageIx;
+      if (q <= 2)      stageIx = 0;
+      else if (q <= 4)  stageIx = 1;
+      else                stageIx = 2;
+      stageSum[stageIx]  += idx;
+      stageCount[stageIx] += 1;
+    });
+
+    var stageAvg = stageSum.map(function (sum, i) {
+      return stageCount[i] > 0 ? sum / stageCount[i] : 0;
+    });
+
+    var maxIdx = Math.max.apply(null, stageAvg) || 1;
+    var yAxisMax = Math.max(maxIdx * 1.4, 60);
+
+    // Y 轴网格线 + 标签（显示反算后的原始步数）
+    for (var gi = 0; gi <= 4; gi++) {
+      var f = gi / 4;
+      var y = padT + chartH * (1 - f);
+      var rawVal = Math.round(Math.pow(10, (yAxisMax * f) / 100) - 1);
+      svg.appendChild(svgEl('line', {
+        x1: padL, y1: y,
+        x2: padL + chartW, y2: y,
+        stroke: '#F3F4F6', 'stroke-width': 1
+      }));
+      svg.appendChild(svgText(padL - 6, y + 4, rawVal, {
+        'text-anchor': 'end', fill: '#9CA3AF', 'font-size': 10
+      }));
+    }
+
+    // X 轴：3 个阶段
+    var nStages = 3;
+    var xStep = chartW / (nStages - 1);
+    var stageLabels = ['惯性期\n(第1-2题)', '关键期\n(第3-4题)', '恢复期\n(第5题+)'];
+
+    for (var si = 0; si < nStages; si++) {
+      var x = padL + si * xStep;
+      var lb = stageLabels[si].split('\n');
+      svg.appendChild(svgText(x, padT + chartH + 28, lb[0], {
+        'text-anchor': 'middle', 'font-size': 12, fill: '#374151', 'font-weight': 'bold'
+      }));
+      if (lb[1]) {
+        svg.appendChild(svgText(x, padT + chartH + 42, lb[1], {
+          'text-anchor': 'middle', 'font-size': 10, fill: '#9CA3AF'
+        }));
+      }
+      svg.appendChild(svgEl('line', {
+        x1: x, y1: padT + chartH,
+        x2: x, y2: padT + chartH + 5,
+        stroke: '#D1D5DB', 'stroke-width': 1
+      }));
+    }
+
+    // 画折线（该谜题的 3 个阶段）
+    var points = [];
+    for (var si = 0; si < nStages; si++) {
+      var x = padL + si * xStep;
+      var y = (stageAvg[si] === 0) ? (padT + chartH) : (padT + chartH * (1 - stageAvg[si] / yAxisMax));
+      y = Math.max(y, padT + 2);
+      points.push([x, y]);
+    }
+
+    // 折线
+    var polylinePts = points.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ');
+    svg.appendChild(svgEl('polyline', {
+      points: polylinePts,
+      fill: 'none', stroke: PUZZLE_COLORS[pid],
+      'stroke-width': 2.5, opacity: 0.85,
+      'stroke-linecap': 'round', 'stroke-linejoin': 'round'
+    }));
+
+    // 数据点（圆点）
+    points.forEach(function (p, si) {
+      if (stageAvg[si] === 0) return;
+      svg.appendChild(svgEl('circle', {
+        cx: p[0], cy: p[1], r: 5,
+        fill: PUZZLE_COLORS[pid], stroke: '#FFF', 'stroke-width': 2, opacity: 0.9
+      }));
+      // 显示原始步数
+      var rawSteps = Math.round(Math.pow(10, stageAvg[si] / 100) - 1);
+      svg.appendChild(svgText(
+        p[0], p[1] - 10,
+        rawSteps + '步',
+        { 'text-anchor': 'middle', 'font-size': 10, fill: PUZZLE_COLORS[pid], 'font-weight': 'bold' }
+      ));
+    });
+
+    // 坐标轴
+    svg.appendChild(svgEl('line', { x1: padL, y1: padT, x2: padL, y2: padT + chartH, stroke: '#D1D5DB', 'stroke-width': 1 }));
+    svg.appendChild(svgEl('line', { x1: padL, y1: padT + chartH, x2: padL + chartW, y2: padT + chartH, stroke: '#D1D5DB', 'stroke-width': 1 }));
+
+    // Y 轴标签
+    svg.appendChild(svgText(
+      padL - 30, padT + chartH / 2,
+      '步数指数', {
+        'text-anchor': 'middle', fill: '#9CA3AF', 'font-size': 10,
+        transform: 'rotate(-90,' + (padL - 30) + ',' + (padT + chartH / 2) + ')'
+      }
+    ));
+  });
+
+  // ---------- 图表 4：完成率（横向柱状图）----------
+  (function drawComplete() {
+    var svg = document.getElementById('chartComplete');
+    var W = 420, H = 220;
+    var padL = 50, padR = 60, padT = 20, padB = 20;
+    var chartW = W - padL - padR, chartH = H - padT - padB;
+
+    var rowH = chartH / PUZZLE_IDS.length;
+
+    PUZZLE_IDS.forEach(function (pid, i) {
+      var s = stats[pid];
+      var submits = s ? s.submits : 0;
+      var total   = s ? s.totalQ  : 0;
+      var rate    = total > 0 ? submits / total : 0;
+
+      var y   = padT + i * rowH;
+      var bh  = rowH * 0.55;
+      var by  = y + (rowH - bh) / 2;
+      var bw  = Math.max(rate * chartW, 2);
+
+      // 背景
+      svg.appendChild(svgEl('rect', { x: padL, y: by, width: chartW, height: bh, fill: '#F3F4F6', rx: 4 }));
+      // 填充
+      svg.appendChild(svgEl('rect', { x: padL, y: by, width: bw, height: bh, fill: PUZZLE_COLORS[pid], rx: 4, opacity: 0.85 }));
+
+      svg.appendChild(svgText(padL - 6, by + bh / 2 + 4, PUZZLE_NAMES[pid], { 'text-anchor': 'end', 'font-size': 12, fill: '#374151' }));
+      svg.appendChild(svgText(padL + chartW + 6, by + bh / 2 + 4, Math.round(rate * 100) + '%', { 'text-anchor': 'start', 'font-size': 11, fill: PUZZLE_COLORS[pid], 'font-weight': 'bold' }));
+    });
+  })();
+
+  // ---------- 图表 5：重置次数 ----------
+  (function drawReset() {
+    var svg = document.getElementById('chartReset');
+    var W = 420, H = 220;
+    var padL = 42, padR = 14, padT = 20, padB = 50;
+    var chartW = W - padL - padR, chartH = H - padT - padB;
+
+    var vals = PUZZLE_IDS.map(function (p) { return stats[p] ? stats[p].resets : 0; });
+    var maxV = Math.max.apply(null, vals) || 1;
+    var barW = chartW / PUZZLE_IDS.length;
+
+    [0.25, 0.5, 0.75, 1].forEach(function (f) {
+      var y = padT + chartH * (1 - f);
+      svg.appendChild(svgEl('line', { x1: padL, y1: y, x2: padL + chartW, y2: y, stroke: '#E5E7EB', 'stroke-width': 1 }));
+      svg.appendChild(svgText(padL - 4, y + 4, Math.round(maxV * f), { 'text-anchor': 'end', fill: '#9CA3AF', 'font-size': 10 }));
+    });
+
+    PUZZLE_IDS.forEach(function (pid, i) {
+      var v  = vals[i];
+      var bh = (v / maxV) * chartH;
+      var x  = padL + i * barW + barW * 0.15;
+      var bw = barW * 0.7;
+      var y  = padT + chartH - bh;
+      var col = '#F59E0B';
+
+      svg.appendChild(svgEl('rect', { x: x, y: y, width: bw, height: bh || 2, fill: col, rx: 4, opacity: 0.82 }));
+      if (v > 0) {
+        svg.appendChild(svgText(x + bw / 2, y - 4, v, { 'text-anchor': 'middle', fill: col, 'font-weight': 'bold', 'font-size': 12 }));
+      }
+      svg.appendChild(svgText(x + bw / 2, padT + chartH + 18, PUZZLE_NAMES[pid], { 'text-anchor': 'middle', 'font-size': 12, fill: '#374151' }));
+    });
+
+    svg.appendChild(svgEl('line', { x1: padL, y1: padT, x2: padL, y2: padT + chartH, stroke: '#D1D5DB', 'stroke-width': 1 }));
+    svg.appendChild(svgEl('line', { x1: padL, y1: padT + chartH, x2: padL + chartW, y2: padT + chartH, stroke: '#D1D5DB', 'stroke-width': 1 }));
+  })();
+
+  // ---------- 认知固着指数计算与反馈生成 ----------
+  (function generateFeedback() {
+    var feedbackEl = document.getElementById('feedbackContent');
+    if (!feedbackEl) return;
+
+    var feedbackHtml = '';
+    var hasEntrenchment = false;
+    var allFlexible = true;
+
+    PUZZLE_IDS.forEach(function(pid) {
+      var s = stats[pid];
+      if (!s || s.totalQ < 3) return;
+
+      // 计算各阶段平均步数
+      var inertiaSteps = 0, criticalSteps = 0, recoverySteps = 0;
+      var inertiaCount = 0, criticalCount = 0, recoveryCount = 0;
+
+      s.qs.forEach(function(q) {
+        var v = s.stepsPerQ[q] || 0;
+        if (q <= 2) { inertiaSteps += v; inertiaCount++; }
+        else if (q <= 4) { criticalSteps += v; criticalCount++; }
+        else { recoverySteps += v; recoveryCount++; }
+      });
+
+      var inertiaAvg = inertiaCount > 0 ? inertiaSteps / inertiaCount : 0;
+      var criticalAvg = criticalCount > 0 ? criticalSteps / criticalCount : 0;
+      var recoveryAvg = recoveryCount > 0 ? recoverySteps / recoveryCount : 0;
+
+      // 判断认知固着
+      var isFlexible = criticalAvg < inertiaAvg * 0.85;
+      var isRecovered = recoveryAvg <= criticalAvg * 1.1;
+
+      if (!isFlexible) hasEntrenchment = true;
+      if (!isFlexible || !isRecovered) allFlexible = false;
+
+      var flexibilityText = isFlexible ? 
+        '<span class="feedback-good">✅ 灵活</span>' : 
+        '<span class="feedback-warn">⚠️ 有固着</span>';
+
+      var recoveryText = isRecovered ? 
+        '<span class="feedback-good">✅ 已恢复</span>' : 
+        '<span class="feedback-warn">⚠️ 未完全恢复</span>';
+
+      feedbackHtml += '<div class="feedback-puzzle">';
+      feedbackHtml += '<div class="feedback-puzzle-name">' + PUZZLE_NAMES[pid] + '</div>';
+      feedbackHtml += '<div class="feedback-puzzle-details">';
+      feedbackHtml += '<div>惯性期：<strong>' + (inertiaAvg.toFixed(1)) + '</strong> 步/题</div>';
+      feedbackHtml += '<div>关键期：<strong>' + (criticalAvg.toFixed(1)) + '</strong> 步/题</div>';
+      feedbackHtml += '<div>恢复期：<strong>' + (recoveryAvg.toFixed(1)) + '</strong> 步/题</div>';
+      feedbackHtml += '<div>灵活性：' + flexibilityText + '</div>';
+      feedbackHtml += '<div>恢复：' + recoveryText + '</div>';
+      feedbackHtml += '</div></div>';
+    });
+
+    // 总体评价
+    var overallText = '';
+    if (allFlexible && feedbackHtml !== '') {
+      overallText = '<div class="feedback-overall feedback-overall-good">';
+      overallText += '<div class="feedback-overall-icon">⭐</div>';
+      overallText += '<div class="feedback-overall-text">';
+      overallText += '<strong>总体评价：认知灵活性很好！</strong>';
+      overallText += '<p>你能在关键期发现更简单的方法，思维没有被惯性锁定。</p>';
+      overallText += '</div></div>';
+    } else if (hasEntrenchment) {
+      overallText = '<div class="feedback-overall feedback-overall-warn">';
+      overallText += '<div class="feedback-overall-icon">💡</div>';
+      overallText += '<div class="feedback-overall-text">';
+      overallText += '<strong>总体评价：表现出一定认知固着</strong>';
+      overallText += '<p>这很正常，几乎所有人在某些情况下都会这样。查看下方说明了解如何改善。</p>';
+      overallText += '</div></div>';
+    } else if (feedbackHtml === '') {
+      overallText = '<div class="feedback-overall feedback-overall-neutral">';
+      overallText += '<div class="feedback-overall-icon">📊</div>';
+      overallText += '<div class="feedback-overall-text">';
+      overallText += '<strong>总体评价：数据不足</strong>';
+      overallText += '<p>完成所有谜题后再查看此分析。</p>';
+      overallText += '</div></div>';
+    }
+
+    feedbackEl.innerHTML = overallText + feedbackHtml;
+  })();
+
+  // ---------- 提交方式切换 ----------
+  window.showSubmitMethod = function(method) {
+    // 隐藏所有方式
+    document.getElementById('methodQR').style.display = 'none';
+    document.getElementById('methodManual').style.display = 'none';
+    
+    // 重置按钮样式
+    document.getElementById('btnMethodQR').className = 'btn btn-secondary';
+    document.getElementById('btnMethodManual').className = 'btn btn-secondary';
+    
+    // 显示选中的方式
+    var methodCap = method.charAt(0).toUpperCase() + method.slice(1);
+    document.getElementById('method' + methodCap).style.display = 'block';
+    document.getElementById('btnMethod' + methodCap).className = 'btn btn-primary';
+  };
+
+  // ---------- 生成提交码和二维码 ----------
+  window.generateSubmitCode = function() {
+    var raw = localStorage.getItem('ce_events');
+    if (!raw) {
+      alert('未找到测试数据！');
+      return;
+    }
+
+    var btn = document.getElementById('btnGenerateQR');
+    btn.disabled = true;
+    btn.textContent = '⏳ 正在上传...';
+
+    // 使用 JSONStorage.net 免费 API（无需注册）
+    fetch('https://jsonstorage.net/api/items', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: raw
+    })
+    .then(function(res) { 
+      if (!res.ok) throw new Error('上传失败');
+      return res.json(); 
+    })
+    .then(function(data) {
+      // 获取 key 并构建检索链接
+      var key = data.key || data.Key || (data.uri ? data.uri.split('/').pop() : null);
+      if (!key) throw new Error('未获取到 key');
+      
+      var retrieveUrl = window.location.origin + '/retrieve.html?key=' + key;
+
+      // 生成6位提交码（用于标识）
+      var code = '';
+      var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      for (var i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+
+      // 保存映射关系（提交码 → key）
+      localStorage.setItem('ce_code_' + code, key);
+
+      // 显示结果
+      document.getElementById('submitCode').textContent = code;
+      document.getElementById('qrResult').style.display = 'block';
+
+      // 生成二维码（包含检索链接）
+      var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + 
+                  encodeURIComponent(retrieveUrl);
+      document.getElementById('qrCodeImage').innerHTML = 
+        '<img src="' + qrUrl + '" alt="QR Code" style="border:1px solid #BFDBFE;border-radius:8px;">' +
+        '<div style="font-size:11px;color:#059669;margin-top:8px;">✅ 扫码直接查看数据</div>' +
+        '<div style="font-size:10px;color:#6B7280;margin-top:4px;">提交码：' + code + '（备用）</div>' +
+        '<div style="font-size:10px;color:#2563EB;margin-top:4px;">链接：<input type="text" value="' + retrieveUrl + '" style="width:100%;margin-top:2px;padding:2px;font-size:10px;border:1px solid #D1D5DB;border-radius:4px;" onclick="this.select()"></div>';
+
+      btn.textContent = '✅ 已生成';
+    })
+    .catch(function(err) {
+      btn.disabled = false;
+      btn.textContent = '生成提交码和二维码';
+      alert('生成失败：' + err.message + '\n请使用方式二（手动导出）。');
+    });
+  };
+
+})();
+</script>
+</body>
+</html>
