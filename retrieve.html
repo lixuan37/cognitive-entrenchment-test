@@ -148,7 +148,7 @@
     
     if (key) {
       // 从 API 读取数据
-      fetch('https://jsonstorage.net/api/items/' + key)
+      fetch('https://www.jsonstorage.net/api/items/' + key)
         .then(function(res) {
           if (!res.ok) throw new Error('数据不存在或已过期');
           return res.text();
@@ -231,7 +231,7 @@
 
       // 如果存储的是 key（新方案），从 API 读取
       if (keyOrData.length > 20) {
-        fetch('https://jsonstorage.net/api/items/' + keyOrData)
+        fetch('https://www.jsonstorage.net/api/items/' + keyOrData)
           .then(function(res) {
             if (!res.ok) throw new Error('数据不存在或已过期');
             return res.text();

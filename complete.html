@@ -1033,7 +1033,7 @@
     btn.textContent = '⏳ 正在上传...';
 
     // 使用 JSONStorage.net 免费 API（无需注册）
-    fetch('https://jsonstorage.net/api/items', {
+    fetch('https://www.jsonstorage.net/api/items', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: raw
@@ -1047,7 +1047,8 @@
       var key = data.key || data.Key || (data.uri ? data.uri.split('/').pop() : null);
       if (!key) throw new Error('未获取到 key');
       
-      var retrieveUrl = window.location.origin + '/retrieve.html?key=' + key;
+      // 使用相对路径，兼容 GitHub Pages 子目录部署
+      var retrieveUrl = window.location.origin + window.location.pathname.replace(/complete\.html$/, '') + 'retrieve.html?key=' + key;
 
       // 生成6位提交码（用于标识）
       var code = '';
